@@ -1,6 +1,7 @@
 package util;
 
-import java.util.Random;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Util for String
@@ -78,5 +79,87 @@ public class StringUtil {
 
 	return stringBuilder.toString();
     }
+    public static void main(String[] args) throws Exception {
+        State constants[] = State.values();
+        System.out.println("Value of constants: ");
+        for(State d: constants) {
+            System.out.println(d.getCode()+": "+d);
+        }
+        System.out.println("Select one model: ");
+        Scanner sc = new Scanner(System.in);
+        int model = sc.nextInt();
+
+        IState iState=Cities.Delhi;
+        Method method = iState.getClass().getMethod("values");
+        IState[] inter = (IState[]) method.invoke(null);
+        for (IState enumMessage : inter) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("value", enumMessage.getCode());
+            map.put("desc", enumMessage.getDesc());
+            map.put("state", enumMessage.getState());
+            Optional<State> optionalState= enumMessage.getState().stream().filter(p->p.getCode().equals(model)).findAny();
+            if(optionalState.isPresent()) {
+                System.out.println(map);
+                System.out.printf("code:%s",enumMessage.getCode());
+            }
+        }
+    }
+}
+
+enum State {
+    Telangana(1,"Telangana"),
+    Delhi(2,"Delhi"),
+    Tamilnadu(3,"Tamilnadu"),
+    Karnataka(4,"Karnataka"),
+    Andhrapradesh(5,"Andhrapradesh");
+    private Integer code;
+    private String  desc;
+    State(Integer code,String desc){
+        this.code=code;
+        this.desc=desc;
+    }
+
+    public Integer getCode(){
+        return this.code;
+    }
+
+    public String getDesc(){
+        return this.desc;
+    }
+}
+
+enum Cities implements IState {
+    Hyderabad(1,"Hyderabad",State.Telangana,State.Delhi),
+    Delhi(2,"Delhi",State.Tamilnadu,State.Karnataka,State.Andhrapradesh);
+    //实例变量
+    private Integer code;
+    private String  desc;
+    private List<State> state;
+    //构造函数初始化实例变量
+    Cities(Integer code,String desc,State ... state){
+        this.code=code;
+        this.desc=desc;
+        this.state = Arrays.asList(state);
+    }
+    @Override
+    public Integer getCode(){
+        return this.code;
+    }
+    @Override
+    public String getDesc(){
+        return this.desc;
+    }
+    @Override
+    public List<State> getState(){
+        return this.state;
+    }
 
 }
+interface IState {
+     Integer getCode();
+     String getDesc();
+     List<State> getState();
+}
+
+
+
