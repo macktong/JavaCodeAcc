@@ -43,7 +43,7 @@ Java代码积累：**[并发](./README.md/#concurrency) [设计模式](./README.
 - [利用迭代器实现反转](./src/containers/Reverse.java)
 
 ## util
-- [StringUtil类 - 封装常用的String方法](./src/util/StringUtil.java)
+- [StringUtil类 - 封装常用的String方法和枚举之间互相转换](./src/util/StringUtil.java)
 
 ## basic
 - [正则表达式使用方式](./src/basic/UsingRegex.java)
